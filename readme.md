@@ -120,7 +120,7 @@ Since you imported the repo (instead of forking), to get future updates:
 ```bash
 git remote add upstream https://github.com/crstauf/jira-active-releases.git
 git fetch upstream
-git merge upstream/main  # or rebase if preferred
+git merge upstream/master  # or rebase if preferred
 ```
 
 Then re-deploy.

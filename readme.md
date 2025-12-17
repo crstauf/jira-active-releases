@@ -1,5 +1,7 @@
 # My Active Jira Releases — Cloudflare Worker
 
+> Created by Caleb Stauffer and Grok
+
 Your personal, real-time, **clickable dashboard** of every unreleased (active) Jira version across your projects.
 
 **Just bookmark this URL — it’s all you’ll ever need:**

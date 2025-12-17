@@ -32,7 +32,7 @@ You can deploy and manage your instance in two ways:
 
 Perfect if you want a fully managed, repeatable deployment without installing anything locally.
 
-> [!IMPORTANT]
+> [!NOTE]
 > Because the source repository is public and GitHub does not allow private forks of public repos, use GitHub's **Import Repository** tool to create a private copy. 
 
 1. Go to https://github.com/new/import

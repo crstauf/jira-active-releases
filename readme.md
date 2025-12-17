@@ -30,31 +30,41 @@ You can deploy and manage your instance in two ways:
 
 Perfect if you want a fully managed, repeatable deployment without installing anything locally.
 
-1. Fork this repository to your GitHub account
-2. In Cloudflare dashboard:
+> [!IMPORTANT]
+> Because the source repository is public and GitHub does not allow private forks of public repos, use GitHub's **Import Repository** tool to create a private copy. 
+
+1. Go to https://github.com/new/import
+2. Enter the repository URL: `https://github.com/crstauf/jira-active-releases`
+3. Choose a name for your new repository (e.g., `jira-active-releases`)
+4. Select **Private** (so your `wrangler.jsonc` stays hidden)
+5. Click **Begin import** and wait for it to complete
+
+6. In Cloudflare dashboard:
    - Go to your profile → **API Tokens** → Create token → Use template **"Edit Cloudflare Workers"**
    - Copy your **Account ID** (found in the three-dot menu of the account name)
-3. In your forked repo → **Settings → Secrets and variables → Actions → New repository secret**
+
+7. In your new (private) imported repo → **Settings → Secrets and variables → Actions → New repository secret**
    Add the following secrets:
-   - `CLOUDFLARE_API_TOKEN` → your token from step two
+   - `CLOUDFLARE_API_TOKEN` → your token from step 6
    - `CLOUDFLARE_ACCOUNT_ID` → your account ID (recommended)
    - `JIRA_SITE` → e.g. `yourcompany.atlassian.net`
    - `JIRA_EMAIL` → your Atlassian email
    - `JIRA_TOKEN` → API token from https://id.atlassian.com/manage-profile/security/api-tokens
    - `JIRA_PROJECTS` → space or comma-separated project keys (case-insensitive)  
      Example: `WEB MOBILE BACKEND DATA INFRA AIOPS`
-4. Go to the **Actions** tab → Select **"Deploy"** → Click **Run workflow**
+
+8. Go to the **Actions** tab → Select **"Deploy Jira Releases Worker"** → Click **Run workflow**
 
 Your personal Worker is now live!  
 Re-run the workflow anytime to:
-- Update the code (after pulling latest changes)
+- Update the code (after pulling latest changes from the source repo)
 - Update any secrets (like adding/removing projects)
 
 ### Option 2: Local Development & Deployment (with Wrangler CLI)
 
 Ideal if you want to test changes locally or develop new features.
 
-1. Clone your forked repo
+1. Clone your private imported repo
    ```bash
    git clone https://github.com/your-username/jira-active-releases.git
    cd jira-active-releases
@@ -95,11 +105,23 @@ To deploy successfully and use your own Worker name/settings:
 
 1. Copy `wrangler.sample.jsonc` to `wrangler.jsonc` in the project root
 2. Edit `wrangler.jsonc` — at minimum, change the `"name"` field to something unique (e.g., "my-jira-releases")
-3. Commit `wrangler.jsonc` (it's safe — contains no secrets)
+3. Commit `wrangler.jsonc` (safe in your private repo — contains no secrets)
 
-This gives you full control over all Wrangler settings (name, routes, bindings, placement, etc.) while avoiding merge conflicts when pulling future updates from this repository (just don't edit the sample file).
+This gives you full control over all Wrangler settings (name, routes, bindings, placement, etc.).
 
 **Wrangler requires `wrangler.jsonc` to exist for deployment** — if missing, deploy will fail with a clear error.
+
+## Updating the Code from Upstream
+
+Since you imported the repo (instead of forking), to get future updates:
+
+```bash
+git remote add upstream https://github.com/crstauf/jira-active-releases.git
+git fetch upstream
+git merge upstream/main  # or rebase if preferred
+```
+
+Then re-deploy.
 
 ## Updating Projects
 

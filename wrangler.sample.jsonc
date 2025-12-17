@@ -1,0 +1,11 @@
+/**
+ * For more details on how to configure Wrangler, refer to:
+ * https://developers.cloudflare.com/workers/wrangler/configuration/
+ */
+{
+  "name": "jira-active-releases",  // Change this in your wrangler.jsonc!
+  "main": "src/index.js",
+  "compatibility_date": "2025-12-16",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true
+}

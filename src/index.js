@@ -112,6 +112,11 @@ export default {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Active Jira Releases</title>
+
+  <!-- Alternate formats -->
+  <link rel="alternate" type="application/json" href="${url.pathname}?format=json" title="JSON">
+  <link rel="alternate" type="text/markdown; charset=utf-8" href="${url.pathname}?format=md" title="Markdown">
+
   <style>
     body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 40px; background: #f6f8fa; color: #172b4d; line-height: 1.6; }
     h1 { color: #0052cc; border-bottom: 2px solid #0052cc; padding-bottom: 10px; }
@@ -175,7 +180,6 @@ export default {
           }
         }
 
-        // No footer metadata in Markdown
         body = md;
         contentType = "text/markdown; charset=utf-8";
 

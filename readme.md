@@ -1,6 +1,7 @@
 # My Active Jira Releases — Cloudflare Worker
 
 > Created by Caleb Stauffer and Grok
+> 
 > [crstauf/jira-active-releases](https://github.com/crstauf/jira-active-releases)
 
 Your personal, real-time, **clickable dashboard** of every unreleased (active) Jira version across your projects.
@@ -10,7 +11,7 @@ Your personal, real-time, **clickable dashboard** of every unreleased (active) J
 `https://your-worker.workers.dev`
 
 Opens instantly to a beautiful HTML page with fully clickable release links.
-Always up-to-date. 100 % private. Zero maintenance.
+Always up-to-date. 100% private. Zero maintenance.
 
 ## Features
 
@@ -19,7 +20,7 @@ Always up-to-date. 100 % private. Zero maintenance.
   - `?format=markdown` **or** `?format=md` → clean Markdown table with clickable project and version links
   - `?format=json` → structured JSON data (ideal for scripts or integrations)
 - Shows **all configured projects**, even those with no active releases
-- Caches results for 6 hours (with stale-while-revalidate) for fast loads
+- Caches results for six hours (with stale-while-revalidate) for fast loads
 - `?force=1` bypasses cache for an immediate refresh
 - Works even if you lack the global “Browse Projects” permission
 - Runs on Cloudflare Workers — free tier forever

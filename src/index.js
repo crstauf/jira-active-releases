@@ -110,7 +110,8 @@ export default {
           </tr>`;
         }
 
-        const forceUrl = `${basePath}?force=1`;
+        // Cache-busting for immediate visual feedback on force refresh
+        const forceUrl = `${basePath}?force=1&t=${Date.now()}`;
 
         body = `<!DOCTYPE html>
 <html lang="en">

@@ -111,7 +111,7 @@ export default {
         }
 
         // Cache-busting for immediate visual feedback on force refresh
-        const forceUrl = `${basePath}?force=1&t=${Date.now()}`;
+        const forceUrl = `${basePath}?force=${Date.now()}`;
 
         body = `<!DOCTYPE html>
 <html lang="en">

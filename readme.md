@@ -120,7 +120,7 @@ Since you imported the repo (instead of forking), to get future updates:
 ```bash
 git remote add upstream https://github.com/crstauf/jira-active-releases.git
 git fetch upstream
-git merge upstream/master  # or rebase if preferred
+git merge upstream/main  # or rebase if preferred
 ```
 
 Then re-deploy.
@@ -134,42 +134,58 @@ Whichever method you use:
 
 ## Format Details
 
+All formats include links to switch between representations and to the source repository.
+
 ### HTML (default)
 - Full styled table
 - Project links → Jira project summary
 - Version links → direct release page
-- Footer shows last update time and force-refresh link
+- Footer includes:
+  - Update timestamp
+  - Force refresh link
+  - Links to Markdown and JSON formats
+  - Link to the [source repository](https://github.com/crstauf/jira-active-releases)
 
 ### Markdown (`?format=markdown` or `?format=md`)
 - Simple, readable Markdown table
 - Clickable project and version links
 - Projects with no unreleased versions show "—"
+- Footer with:
+  - Update timestamp
+  - Links to HTML and JSON formats
+  - Link to the source repository
 - Clean output — great for pasting into tickets, Slack, Notion, etc.
 
 ### JSON (`?format=json`)
-Returns an array of projects (all configured projects included):
+Returns an object with metadata and project data:
 
 ```json
-[
-  {
-    "project": "WEB",
-    "projectUrl": "https://yourcompany.atlassian.net/jira/software/c/projects/WEB/summary",
-    "releases": [
-      {
-        "version": "Release 11",
-        "url": "https://yourcompany.atlassian.net/projects/WEB/versions/12345"
-      }
-    ]
+{
+  "_meta": {
+    "generated_at": "2025-12-19 14:32:10 UTC",
+    "source": "https://github.com/crstauf/jira-active-releases",
+    "formats": {
+      "html": "https://your-domain.com/",
+      "markdown": "https://your-domain.com/?format=md",
+      "json": "https://your-domain.com/?format=json"
+    }
   },
-  {
-    "project": "MOBILE",
-    "projectUrl": "https://yourcompany.atlassian.net/jira/software/c/projects/MOBILE/summary",
-    "releases": []
-  }
-]
+  "projects": [
+    {
+      "project": "WEB",
+      "projectUrl": "https://yourcompany.atlassian.net/jira/software/c/projects/WEB/summary",
+      "releases": [
+        {
+          "version": "Release 11",
+          "url": "https://yourcompany.atlassian.net/projects/WEB/versions/12345"
+        }
+      ]
+    }
+  ]
+}
 ```
 
-Perfect for scripting or feeding into other tools.
+Perfect for scripting or feeding into other tools — parsers can safely ignore `_meta`.
 
 ## You’re all set!
 

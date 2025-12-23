@@ -167,7 +167,7 @@ export default {
     .updated { margin-bottom: 2px; }
     .updated span { border-bottom: 1px dotted var(--muted); cursor: help; }
     .force { color: #de350b; font-weight: 600; font-size: 0.85em; margin-top: 2px; display: inline-block; }
-    .formats { margin-top: 12px; }
+    .formats { margin-top: 12px; font-size: 0.85em; }
 
     /* Theme Switcher */
     .theme-switcher {
@@ -219,14 +219,16 @@ export default {
       height: 22px;
     }
 
-    /* GitHub icon in footer */
+    /* Original GitHub footer styling - theme aware colors */
+    .source {
+      margin-top: 16px;
+    }
+
     .source a {
       color: var(--muted);
-      text-decoration: none;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      transition: color 0.3s;
+      gap: 6px;
     }
 
     .source a:hover {
@@ -234,16 +236,28 @@ export default {
     }
 
     .source svg {
-      width: 20px;
-      height: 20px;
+      width: 16px;
+      height: 16px;
       fill: currentColor;
+    }
+
+    .source .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0;
     }
   </style>
 </head>
 <body>
 
   <div class="theme-switcher">
-    <button class="theme-btn" data-theme-value="light" title="Light">
+    <button class="theme-btn" data-theme-value="light" title="Light mode">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="12" r="5"/>
         <line x1="12" y1="1" x2="12" y2="3"/>
@@ -257,13 +271,13 @@ export default {
       </svg>
     </button>
 
-    <button class="theme-btn" data-theme-value="dark" title="Dark">
+    <button class="theme-btn" data-theme-value="dark" title="Dark mode">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
       </svg>
     </button>
 
-    <button class="theme-btn active" data-theme-value="system" title="System">
+    <button class="theme-btn active" data-theme-value="system" title="System preference">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <rect x="3" y="4" width="18" height="16" rx="2" ry="2"/>
         <line x1="8" y1="20" x2="16" y2="20"/>
@@ -292,10 +306,10 @@ export default {
     </div>
     <div class="source">
       <a href="${repoUrl}">
-        <svg viewBox="0 0 16 16" aria-hidden="true">
-          <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+        <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+          <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
         </svg>
-        Source on GitHub
+        <span class="visually-hidden">Source on GitHub</span>
       </a>
     </div>
   </div>

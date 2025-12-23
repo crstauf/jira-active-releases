@@ -76,7 +76,6 @@ export default {
         result[p].versions.sort((a, b) => a.name.localeCompare(b.name));
       }
 
-      // Links — explicit format params, absolute where needed
       const basePath = url.pathname;
       const host = url.host;
       const protocol = url.protocol;
@@ -110,7 +109,6 @@ export default {
           </tr>`;
         }
 
-        // Cache-busting for immediate visual feedback on force refresh
         const forceUrl = `${basePath}?force=${Date.now()}`;
 
         body = `<!DOCTYPE html>
@@ -133,7 +131,7 @@ export default {
       --header-bg: #f1f5f9;
       --link: #0052cc;
       --muted: #6b778c;
-      --surface-1: rgba(255,255,255,0.85);
+      --surface-1: rgba(255,255,255,0.92);
     }
 
     [data-theme="dark"] {
@@ -144,7 +142,7 @@ export default {
       --header-bg: #0f1a29;
       --link: #4c9aff;
       --muted: #9ca3af;
-      --surface-1: rgba(23, 33, 46, 0.9);
+      --surface-1: rgba(23, 33, 46, 0.92);
     }
 
     body {
@@ -169,7 +167,7 @@ export default {
     .updated { margin-bottom: 2px; }
     .updated span { border-bottom: 1px dotted var(--muted); cursor: help; }
     .force { color: #de350b; font-weight: 600; font-size: 0.85em; margin-top: 2px; display: inline-block; }
-    .formats { margin-top: 12px; font-size: 0.85em; }
+    .formats { margin-top: 12px; }
 
     /* Theme Switcher */
     .theme-switcher {
@@ -178,22 +176,22 @@ export default {
       right: 1rem;
       z-index: 100;
       background: var(--surface-1);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      border-radius: 8px;
-      padding: 0.35rem;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 10px;
+      padding: 0.4rem;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
       display: flex;
-      gap: 4px;
+      gap: 6px;
       border: 1px solid var(--border);
     }
 
     .theme-btn {
       background: none;
       border: none;
-      width: 36px;
-      height: 36px;
-      border-radius: 6px;
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -217,15 +215,35 @@ export default {
     }
 
     .theme-btn svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    /* GitHub icon in footer */
+    .source a {
+      color: var(--muted);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: color 0.3s;
+    }
+
+    .source a:hover {
+      color: var(--text);
+    }
+
+    .source svg {
       width: 20px;
       height: 20px;
+      fill: currentColor;
     }
   </style>
 </head>
 <body>
 
   <div class="theme-switcher">
-    <button class="theme-btn" data-theme-value="light" title="Light mode">
+    <button class="theme-btn" data-theme-value="light" title="Light">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="12" r="5"/>
         <line x1="12" y1="1" x2="12" y2="3"/>
@@ -239,13 +257,13 @@ export default {
       </svg>
     </button>
 
-    <button class="theme-btn" data-theme-value="dark" title="Dark mode">
+    <button class="theme-btn" data-theme-value="dark" title="Dark">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
       </svg>
     </button>
 
-    <button class="theme-btn active" data-theme-value="system" title="Follow system preference">
+    <button class="theme-btn active" data-theme-value="system" title="System">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <rect x="3" y="4" width="18" height="16" rx="2" ry="2"/>
         <line x1="8" y1="20" x2="16" y2="20"/>
@@ -273,7 +291,12 @@ export default {
       View as: <a href="${mdUrl}">Markdown</a> • <a href="${jsonUrl}">JSON</a>
     </div>
     <div class="source">
-      <a href="${repoUrl}">Source on GitHub</a>
+      <a href="${repoUrl}">
+        <svg viewBox="0 0 16 16" aria-hidden="true">
+          <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+        </svg>
+        Source on GitHub
+      </a>
     </div>
   </div>
 
@@ -284,7 +307,6 @@ export default {
       set(theme) {
         this.current = theme;
         localStorage.setItem('theme', theme);
-
         document.documentElement.setAttribute('data-theme', theme);
 
         document.querySelectorAll('.theme-btn').forEach(btn => {
@@ -322,7 +344,6 @@ export default {
         contentType = "text/html; charset=utf-8";
 
       } else if (format === "markdown") {
-        // ... (markdown output remains unchanged)
         let md = `# My Active Jira Releases
 
 `;
@@ -353,7 +374,6 @@ export default {
         contentType = "text/markdown; charset=utf-8";
 
       } else {
-        // JSON output remains unchanged
         const projectsData = sortedProjects.map(proj => {
           const { versions } = result[proj];
           return {

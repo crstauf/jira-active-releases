@@ -104,7 +104,7 @@ export default {
 
           rows += `<tr>
             <td style="padding-right: 2em; white-space: nowrap;">
-              <a href="${projectUrl}" style="font-weight: 600; color: #0052cc;">${proj}</a>
+              <a href="${projectUrl}" style="font-weight: 600; color: var(--link);">${proj}</a>
             </td>
             <td>${versionLinks}</td>
           </tr>`;
@@ -114,37 +114,146 @@ export default {
         const forceUrl = `${basePath}?force=${Date.now()}`;
 
         body = `<!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="system">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
   <title>My Active Jira Releases</title>
 
   <link rel="alternate" type="application/json" href="${jsonUrl}" title="JSON">
   <link rel="alternate" type="text/markdown; charset=utf-8" href="${mdUrl}" title="Markdown">
 
   <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 40px; background: #f6f8fa; color: #172b4d; line-height: 1.6; }
-    h1 { color: #0052cc; border-bottom: 2px solid #0052cc; padding-bottom: 10px; }
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    :root {
+      --bg: #f6f8fa;
+      --text: #172b4d;
+      --table-bg: white;
+      --border: #dfe1e6;
+      --header-bg: #f1f5f9;
+      --link: #0052cc;
+      --muted: #6b778c;
+      --surface-1: rgba(255,255,255,0.85);
+    }
+
+    [data-theme="dark"] {
+      --bg: #101623;
+      --text: #e6e9f0;
+      --table-bg: #17212e;
+      --border: #2b3d4f;
+      --header-bg: #0f1a29;
+      --link: #4c9aff;
+      --muted: #9ca3af;
+      --surface-1: rgba(23, 33, 46, 0.9);
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      margin: 40px;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    h1 { color: var(--link); border-bottom: 2px solid var(--link); padding-bottom: 10px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; background: var(--table-bg); border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
     th, td { padding: 12px 0; text-align: left; }
-    th { background: #f1f5f9; padding-left: 16px; padding-right: 16px; }
-    td { padding-left: 16px; padding-right: 16px; border-top: 1px solid #dfe1e6; vertical-align: top; }
+    th { background: var(--header-bg); padding-left: 16px; padding-right: 16px; }
+    td { padding-left: 16px; padding-right: 16px; border-top: 1px solid var(--border); vertical-align: top; }
     td:first-child { width: 1%; white-space: nowrap; }
-    a { color: #0052cc; text-decoration: none; }
+    a { color: var(--link); text-decoration: none; }
     a:hover { text-decoration: underline; }
-    .footer { margin-top: 60px; font-size: 0.9em; color: #6b778c; text-align: center; }
-    .updated { margin-bottom: 2px; font-size: 0.85em; }
-    .updated span { border-bottom: 1px dotted #6b778c; cursor: help; }
+
+    .footer { margin-top: 60px; font-size: 0.9em; color: var(--muted); text-align: center; }
+    .updated { margin-bottom: 2px; }
+    .updated span { border-bottom: 1px dotted var(--muted); cursor: help; }
     .force { color: #de350b; font-weight: 600; font-size: 0.85em; margin-top: 2px; display: inline-block; }
     .formats { margin-top: 12px; font-size: 0.85em; }
-    .source { margin-top: 16px; }
-    .source a { color: #9ca3af; display: inline-flex; align-items: center; gap: 6px; }
-    .source svg { height: 16px; width: 16px; }
-    .source .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+    /* Theme Switcher */
+    .theme-switcher {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 100;
+      background: var(--surface-1);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-radius: 8px;
+      padding: 0.35rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+      display: flex;
+      gap: 4px;
+      border: 1px solid var(--border);
+    }
+
+    .theme-btn {
+      background: none;
+      border: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      transition: all 0.2s;
+    }
+
+    .theme-btn:hover {
+      background: rgba(0,0,0,0.08);
+      color: var(--text);
+    }
+
+    [data-theme="dark"] .theme-btn:hover {
+      background: rgba(255,255,255,0.12);
+    }
+
+    .theme-btn.active {
+      background: var(--link);
+      color: white;
+    }
+
+    .theme-btn svg {
+      width: 20px;
+      height: 20px;
+    }
   </style>
 </head>
 <body>
+
+  <div class="theme-switcher">
+    <button class="theme-btn" data-theme-value="light" title="Light mode">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="5"/>
+        <line x1="12" y1="1" x2="12" y2="3"/>
+        <line x1="12" y1="21" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        <line x1="1" y1="12" x2="3" y2="12"/>
+        <line x1="21" y1="12" x2="23" y2="12"/>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+      </svg>
+    </button>
+
+    <button class="theme-btn" data-theme-value="dark" title="Dark mode">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+    </button>
+
+    <button class="theme-btn active" data-theme-value="system" title="Follow system preference">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="4" width="18" height="16" rx="2" ry="2"/>
+        <line x1="8" y1="20" x2="16" y2="20"/>
+        <line x1="12" y1="16" x2="12" y2="20"/>
+      </svg>
+    </button>
+  </div>
+
   <h1>My Active Jira Releases</h1>
 
   ${sortedProjects.length === 0
@@ -164,20 +273,56 @@ export default {
       View as: <a href="${mdUrl}">Markdown</a> • <a href="${jsonUrl}">JSON</a>
     </div>
     <div class="source">
-      <a href="${repoUrl}">
-        <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-          <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
-        </svg>
-        <span class="visually-hidden">Source on GitHub</span>
-      </a>
+      <a href="${repoUrl}">Source on GitHub</a>
     </div>
   </div>
+
+  <script>
+    const themeSwitcher = {
+      current: localStorage.getItem('theme') || 'system',
+
+      set(theme) {
+        this.current = theme;
+        localStorage.setItem('theme', theme);
+
+        document.documentElement.setAttribute('data-theme', theme);
+
+        document.querySelectorAll('.theme-btn').forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.themeValue === theme);
+        });
+      },
+
+      init() {
+        if (this.current === 'system') {
+          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+        } else {
+          document.documentElement.setAttribute('data-theme', this.current);
+        }
+
+        window.matchMedia('(prefers-color-scheme: dark)')
+          .addEventListener('change', e => {
+            if (this.current === 'system') {
+              document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+            }
+          });
+
+        document.querySelectorAll('.theme-btn').forEach(btn => {
+          btn.addEventListener('click', () => this.set(btn.dataset.themeValue));
+        });
+      }
+    };
+
+    document.addEventListener('DOMContentLoaded', () => themeSwitcher.init());
+  </script>
+
 </body>
 </html>`;
 
         contentType = "text/html; charset=utf-8";
 
       } else if (format === "markdown") {
+        // ... (markdown output remains unchanged)
         let md = `# My Active Jira Releases
 
 `;
@@ -208,6 +353,7 @@ export default {
         contentType = "text/markdown; charset=utf-8";
 
       } else {
+        // JSON output remains unchanged
         const projectsData = sortedProjects.map(proj => {
           const { versions } = result[proj];
           return {

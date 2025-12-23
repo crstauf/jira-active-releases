@@ -112,7 +112,7 @@ export default {
         const forceUrl = `${basePath}?force=${Date.now()}`;
 
         body = `<!DOCTYPE html>
-<html lang="en" data-theme="system">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -135,14 +135,14 @@ export default {
     }
 
     [data-theme="dark"] {
-      --bg: #101623;
-      --text: #e6e9f0;
-      --table-bg: #17212e;
-      --border: #2b3d4f;
-      --header-bg: #0f1a29;
-      --link: #4c9aff;
-      --muted: #9ca3af;
-      --surface-1: rgba(23, 33, 46, 0.92);
+      --bg:        #0f1117;
+      --text:      #e2e8f0;
+      --table-bg:  #171b26;
+      --border:    #2d3748;
+      --header-bg: #1e2533;
+      --link:      #a78bfa;
+      --muted:     #a0a4c0;
+      --surface-1: rgba(30, 37, 51, 0.92);
     }
 
     body {
@@ -154,22 +154,37 @@ export default {
       transition: background-color 0.3s, color 0.3s;
     }
 
-    h1 { color: var(--link); border-bottom: 2px solid var(--link); padding-bottom: 10px; }
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; background: var(--table-bg); border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    h1 { 
+      color: var(--link); 
+      border-bottom: 2px solid var(--link); 
+      padding-bottom: 10px; 
+    }
+
+    table { 
+      width: 100%; 
+      border-collapse: collapse; 
+      margin-top: 20px; 
+      background: var(--table-bg); 
+      border-radius: 8px; 
+      overflow: hidden; 
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2); 
+    }
+
     th, td { padding: 12px 0; text-align: left; }
     th { background: var(--header-bg); padding-left: 16px; padding-right: 16px; }
     td { padding-left: 16px; padding-right: 16px; border-top: 1px solid var(--border); vertical-align: top; }
     td:first-child { width: 1%; white-space: nowrap; }
+
     a { color: var(--link); text-decoration: none; }
     a:hover { text-decoration: underline; }
 
     .footer { margin-top: 60px; font-size: 0.9em; color: var(--muted); text-align: center; }
     .updated { margin-bottom: 2px; }
     .updated span { border-bottom: 1px dotted var(--muted); cursor: help; }
-    .force { color: #de350b; font-weight: 600; font-size: 0.85em; margin-top: 2px; display: inline-block; }
+    .force { color: #f87171; font-weight: 600; font-size: 0.85em; margin-top: 2px; display: inline-block; }
     .formats { margin-top: 12px; font-size: 0.85em; }
 
-    /* Theme Switcher */
+    /* Theme Switcher - now subtle by default */
     .theme-switcher {
       position: fixed;
       top: 1rem;
@@ -180,17 +195,23 @@ export default {
       -webkit-backdrop-filter: blur(10px);
       border-radius: 10px;
       padding: 0.4rem;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.25);
       display: flex;
       gap: 6px;
       border: 1px solid var(--border);
+      opacity: 0.5;                    /* Default: subtle 50% opacity */
+      transition: opacity 0.3s ease;   /* Smooth fade */
+    }
+
+    .theme-switcher:hover {
+      opacity: 1;                      /* Full opacity on hover */
     }
 
     .theme-btn {
       background: none;
       border: none;
-      width: 38px;
-      height: 38px;
+      width: 34px;
+      height: 34px;
       border-radius: 8px;
       cursor: pointer;
       display: flex;
@@ -201,7 +222,7 @@ export default {
     }
 
     .theme-btn:hover {
-      background: rgba(0,0,0,0.08);
+      background: rgba(255,255,255,0.08);
       color: var(--text);
     }
 
@@ -215,11 +236,11 @@ export default {
     }
 
     .theme-btn svg {
-      width: 22px;
-      height: 22px;
+      width: 16px;
+      height: 16px;
     }
 
-    /* Original GitHub footer styling - theme aware colors */
+    /* GitHub footer icon */
     .source {
       margin-top: 16px;
     }
@@ -279,9 +300,9 @@ export default {
 
     <button class="theme-btn active" data-theme-value="system" title="System preference">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="3" y="4" width="18" height="16" rx="2" ry="2"/>
-        <line x1="8" y1="20" x2="16" y2="20"/>
-        <line x1="12" y1="16" x2="12" y2="20"/>
+        <rect x="3" y="5" width="18" height="13" rx="2" ry="2"/>
+        <rect x="7" y="18" width="10" height="2" rx="1"/>
+        <line x1="12" y1="18" x2="12" y2="20"/>
       </svg>
     </button>
   </div>
@@ -321,7 +342,13 @@ export default {
       set(theme) {
         this.current = theme;
         localStorage.setItem('theme', theme);
-        document.documentElement.setAttribute('data-theme', theme);
+
+        if (theme === 'system') {
+          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+        } else {
+          document.documentElement.setAttribute('data-theme', theme);
+        }
 
         document.querySelectorAll('.theme-btn').forEach(btn => {
           btn.classList.toggle('active', btn.dataset.themeValue === theme);
@@ -329,12 +356,7 @@ export default {
       },
 
       init() {
-        if (this.current === 'system') {
-          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-          document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
-        } else {
-          document.documentElement.setAttribute('data-theme', this.current);
-        }
+        this.set(this.current);
 
         window.matchMedia('(prefers-color-scheme: dark)')
           .addEventListener('change', e => {

@@ -73,7 +73,7 @@ export default {
 
       const sortedProjects = Object.keys(result).sort();
       for (const p of sortedProjects) {
-        result[p].versions.sort((a, b) => a.name.localeCompare(b.name));
+        result[p].versions.sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }));
       }
 
       const basePath = url.pathname;

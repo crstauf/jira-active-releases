@@ -1,6 +1,5 @@
 <div align="center">
 	<h1>Jira Active Releases</h1>
-	<p><em>Cloudflare Worker</em></p>
 </div>
 
 <p align="center">

@@ -1,12 +1,22 @@
-# My Active Jira Releases — Cloudflare Worker
+<div align="center">
+	<h1>Jira Active Releases</h1>
+	<p><em>Cloudflare Worker</em></p>
+</div>
 
-> Created by Caleb Stauffer and Grok
-> 
-> [crstauf/jira-active-releases](https://github.com/crstauf/jira-active-releases)
+<p align="center">
+	Created by Caleb Stauffer and Grok<br />
+	<a href="https://github.com/crstauf/jira-active-releases">crstauf/jira-active-releases</a>
+</p>
+
+<p align="center">
+	<picture>
+		<source media="(prefers-color-scheme: dark)" srcset="screenshot-dark.jpeg" />
+		<source media="(prefers-color-scheme: light)" srcset="screenshot-light.jpeg" />
+		<img src="screenshot-light.jpeg" width="1000" alt="Jira Active Releases" />
+	</picture>
+</p>
 
 Your personal, real-time, **clickable dashboard** of every unreleased (active) Jira version across your projects.
-
-**Just bookmark this URL — it’s all you’ll ever need:**
 
 `https://your-worker.workers.dev`
 
@@ -35,7 +45,7 @@ You can deploy and manage your instance in two ways:
 Perfect if you want a fully managed, repeatable deployment without installing anything locally.
 
 > [!NOTE]
-> Because the source repository is public and GitHub does not allow private forks of public repos, use GitHub's **Import Repository** tool to create a private copy. 
+> Because the source repository is public and GitHub does not allow private forks of public repos, use GitHub's **Import Repository** tool to create a private copy.
 
 1. Go to https://github.com/new/import
 2. Enter the repository URL: `https://github.com/crstauf/jira-active-releases`
@@ -54,12 +64,12 @@ Perfect if you want a fully managed, repeatable deployment without installing an
    - `JIRA_SITE` → e.g. `yourcompany.atlassian.net`
    - `JIRA_EMAIL` → your Atlassian email
    - `JIRA_TOKEN` → API token from https://id.atlassian.com/manage-profile/security/api-tokens
-   - `JIRA_PROJECTS` → space or comma-separated project keys (case-insensitive)  
+   - `JIRA_PROJECTS` → space or comma-separated project keys (case-insensitive)
      Example: `WEB MOBILE BACKEND DATA INFRA AIOPS`
 
 8. Go to the **Actions** tab → Select **"Deploy Jira Releases Worker"** → Click **Run workflow**
 
-Your personal Worker is now live!  
+Your personal Worker is now live!
 Re-run the workflow anytime to:
 - Update the code (after pulling latest changes from the source repo)
 - Update any secrets (like adding/removing projects)

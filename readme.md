@@ -9,9 +9,9 @@
 
 <p align="center">
 	<picture>
-		<source media="(prefers-color-scheme: dark)" srcset="screenshot-dark.png" />
-		<source media="(prefers-color-scheme: light)" srcset="screenshot-light.png" />
-		<img src="screenshot-light.png" width="1000" alt="Jira Active Releases" />
+		<source media="(prefers-color-scheme: dark)" srcset="screenshot-d.png" />
+		<source media="(prefers-color-scheme: light)" srcset="screenshot-l.png" />
+		<img src="screenshot-l.png" width="1000" alt="Jira Active Releases" />
 	</picture>
 </p>
 
